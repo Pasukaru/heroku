@@ -8,8 +8,8 @@ var mongoUri = process.env.MONGOLAB_URI ||
 
 app.use(express.logger());
 
-app.get('/', function(request, response) {
-    var ip = request.connection.remoteAddress;
+app.get('/', function(req, res) {
+    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     console.log("Connection received from: "+ip);
 
     var currentVisitor = {
@@ -43,7 +43,7 @@ app.get('/', function(request, response) {
                 }
                 //Add current visitor and send the response
                 db.collection('visitors').insert(currentVisitor, function(err, data){});
-                response.send(answer);
+                res.send(answer);
             });
         });
     });
