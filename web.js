@@ -9,7 +9,8 @@ var mongoUri = process.env.MONGOLAB_URI ||
 app.use(express.logger());
 
 app.get('/', function(request, response) {
-    var ip = request.ip;
+    var ip = request.connection.remoteAddress;
+    console.log("Connection received from: "+ip);
 
     var currentVisitor = {
         ip: ip,
